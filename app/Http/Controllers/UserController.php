@@ -12,12 +12,15 @@ $this->request = $request;
 }
     public function UserGetAll(){
         $users = User::all();
-        return response()->json($users, 200);
+        return response()->json(['data' => $users], 200);
+    
     }
     public function userShowID($id)
     {
         //
-        return User::where('studentID','like','%'.$id.'%')->get();
+        $users = User::findOrFail($id);
+        return response()->json(['data' => $users], 200);
+        
     }
     public function userAdd(Request $request ){
         $rules = [
@@ -26,8 +29,8 @@ $this->request = $request;
         'studentMname' => 'required|max:50',
         ];
         $this->validate($request,$rules);
-        $user = User::create($request->all());
-        return $user;
+        $users = User::create($request->all());
+        return response()->json(['data' => $users], 200);
        
 }
     public function userUpdate(Request $request,$id)
